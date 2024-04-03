@@ -1,0 +1,35 @@
+version: "3"
+
+services:
+  n8n:
+    build:
+      context: .
+    ports:
+      - "5678:5678"
+    volumes:
+      - n8n_data:/home/.n8n
+    environment:
+      NODE_FUNCTION_ALLOW_EXTERNAL: ical-generator,googleapis
+      GENERIC_TIMEZONE: Asia/Karachi
+      N8N_ENCRYPTION_KEY: HRad53R4fPRYBcrK7zmGQ2dfNHy3d8b
+      DB_TYPE: postgresdb
+      DB_POSTGRESDB_HOST: n8n_postgres
+      DB_POSTGRESDB_DATABASE: n8n
+      DB_POSTGRESDB_PORT: 5432
+      DB_POSTGRESDB_USER: n8n
+      DB_POSTGRESDB_PASSWORD: n8n
+
+  n8n_postgres:
+    image: postgres:15.3
+    volumes:
+      - n8n_postgres_data:/home/postgresql/data
+    environment:
+      POSTGRES_DB: n8n
+      POSTGRES_USER: n8n
+      POSTGRES_PASSWORD: n8n
+    ports:
+      - "5433:5432"
+
+volumes:
+  n8n_data: {}
+  n8n_postgres_data: {}
